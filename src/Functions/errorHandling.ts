@@ -22,4 +22,19 @@ const ERRORS = {
 }
 
 
-class FingerPrintScanner 
+class FingerPrintScannerError extends Error {
+    biometric: any;
+
+    constructor({ name, message, biometric}) { // initialize the objects
+        super(message); // calls the properties to access the properties
+        this.name = name || this.constructor.name;
+        this.biometric = biometric;
+        if(typeof Error.captureStackTrace === 'function' ) {
+            Error.captureStackTrace(this, this.constructor)
+        } else {
+            this.stack = (new Error(message)).stack;
+        }
+    }
+}
+
+export default (name, biometric) => new FingerPrintScannerError({ name, message: ERRORS[name], biometric });
